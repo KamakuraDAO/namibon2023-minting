@@ -67,11 +67,7 @@ const Top = () => {
             const proofjson = JSON.parse(JSON.stringify(proofData))
             const proof = proofjson[ethers.toNumber(supply)]
 
-            console.log(proof)
-
             const tx = await contract.publicMint(proof, password, walletAddress);
-
-            console.log(tx)
 
             setIsLoading(false)
             setTx(tx)
@@ -111,7 +107,6 @@ const Top = () => {
             setTx(tx)
             setIsSuccess(true)
         } catch (error) {
-            console.log(error)
             setIsLoading(false)
             setIsSuccess(false)
             setErrorMsg(error)
@@ -134,8 +129,6 @@ const Top = () => {
     const handleWalletAddress = (walletAddress: string) => {
         if (isValidWalletAddress(walletAddress)) {
             setIsValidAddress(true)
-            console.log(walletAddress)
-            console.log(ethers.getAddress(walletAddress))
             setWalletAddress(ethers.getAddress(walletAddress))
         } else {
             setIsValidAddress(false)
