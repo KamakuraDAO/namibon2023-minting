@@ -147,6 +147,7 @@ const Top = () => {
                     width={500}
                     height={200}
                     className='rounded-lg'
+                    priority={true}
                 />
             </div>
             <div
@@ -170,7 +171,7 @@ const Top = () => {
                 >
                     <p className='font-bold text-center'>なみぼんNFTをゲットしよう！</p>
                     <br />
-                    <p>今年もお祭りNFT発行します！今回は写真コレクションとなっています。</p>
+                    <p>なみぼんNFTは「<a href="https://namibon.net/" className='underline text-blue-500 font-bold'>なみおと盆踊り祭</a>」に参加した人が発行できるお祭りNFTです！今年は参加証明のPOAPとは別に、写真コレクションを無料で配布致します！</p>
 
                     <br />
 
@@ -189,6 +190,7 @@ const Top = () => {
                             alt="Detail"
                             width={500}
                             height={500}
+                            priority={true}
                         // className='rounded-lg shadow-md'
                         />
                     </div>
@@ -245,6 +247,8 @@ const Top = () => {
                                     width={150}
                                     height={150}
                                     className='rounded-lg shadow-md'
+                                    priority={true}
+
                                 />
                                 {version === 0 && (
                                     <Image
@@ -281,6 +285,7 @@ const Top = () => {
                                     width={150}
                                     height={150}
                                     className={`rounded-lg shadow-md ${!isHolderAddress({ address: walletAddress }) ? 'opacity-40' : ''}`}
+                                    priority={true}
                                 />
 
                                 {/* badge */}
