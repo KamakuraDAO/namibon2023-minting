@@ -143,7 +143,7 @@ const Top = () => {
     return (
         <>
             <div
-                className="flex flex-col justify-center items-center w-full h-screen px-5"
+                className="flex flex-col justify-center items-center w-full px-5 my-10 h-fit md:h-screen ]"
             >
                 <Image
                     src="/images/namibon23_logo_yokonaga.jpg"
@@ -179,7 +179,11 @@ const Top = () => {
                     <p>by 鎌倉DAO一同（メンバーも募集中）</p>
                 </div>
 
-
+                <label
+                    className="text-gray-700 text-sm font-bold mt-5"
+                >
+                    Wallet Address
+                </label>
                 <input
                     className="border border-gray-400 rounded-lg px-4 py-2 mt-2 mb-4 hover:border-gray-500 focus:border-gray-500 focus:outline-none"
                     type="text"
@@ -187,6 +191,11 @@ const Top = () => {
                     onChange={(e) => handleWalletAddress(e.target.value)}
                 />
 
+                <label
+                    className='text-gray-700 text-sm font-bold'
+                >
+                    Password
+                </label>
                 <input
                     className="border border-gray-400 rounded-lg px-4 py-2 mt-2 mb-4 hover:border-gray-500 focus:border-gray-500 focus:outline-none"
                     type="text"
