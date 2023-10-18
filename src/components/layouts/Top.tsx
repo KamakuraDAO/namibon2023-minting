@@ -3,9 +3,11 @@
 import React, { use, useEffect, useState } from 'react';
 import { ethers, Wallet } from 'ethers';
 import { ABI } from '@/components/utils/ABI'
+import Confetti from '../amimation/Party';
 
 // json
 import proofData from '../../assets/public.json'
+import holderData from '../../assets/holder.json'
 import holderAddressData from '../../assets/holder-address.json'
 
 import Image from 'next/image';
@@ -21,13 +23,11 @@ const Top = () => {
     const [isValidAddress, setIsValidAddress] = useState<boolean>(false);
     const [version, setVersion] = useState<number>(0)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isSuccess, setIsSuccess] = useState<boolean>(false)
     const [errorMsg, setErrorMsg] = useState<any>()
+    const [tx, setTx] = useState<any>()
 
     const [totalSupply, setTotalSupply] = useState<number>(0)
-
-    console.log('isValidAddress:', isValidAddress);
-    console.log('password:', password);
-    console.log('Condition Result:', !isValidAddress || password === "");
     
     useEffect(() => {
         const fetchTotalSupply = async () => {
@@ -43,11 +43,11 @@ const Top = () => {
 
                 setTotalSupply(ethers.toNumber(supply))
             } catch (error) {
-                console.log(error)
+                setTotalSupply(0)
             }
         }
         fetchTotalSupply()
-    }, [])
+    }, [isSuccess])
 
     const handlePublicMint = async () => {
         try {
@@ -69,10 +69,14 @@ const Top = () => {
 
             const tx = await contract.publicMint(proof, password, walletAddress);
 
-            await tx.wait()
+            console.log(tx)
+
             setIsLoading(false)
+            setTx(tx)
+            setIsSuccess(true)            
         } catch (error) {
             setIsLoading(false)
+            setIsSuccess(false)
             setErrorMsg(error)
         }
     }
@@ -88,12 +92,9 @@ const Top = () => {
                 owner
             )
 
-            const supply = await contract.totalSupply()
-
-            const proofjson = JSON.parse(JSON.stringify(proofData))
-            const proof = proofjson[ethers.toNumber(supply)]
-
-            console.log(proof)
+            const holderProof = JSON.parse(JSON.stringify(holderData))
+            const index = findHolderAddressIndex({ address: walletAddress })
+            const proof = holderProof[index]
 
             const tx = await contract.holderMint(
                 proof, 
@@ -104,9 +105,12 @@ const Top = () => {
 
             await tx.wait()
             setIsLoading(false)
+            setTx(tx)
+            setIsSuccess(true)
         } catch (error) {
             console.log(error)
             setIsLoading(false)
+            setIsSuccess(false)
             setErrorMsg(error)
         }
     }
@@ -117,6 +121,11 @@ const Top = () => {
 
     const isHolderAddress = (walletAddress: HolderAddressData) => {
         return holderAddressData.some((holderAddress) => holderAddress.address === walletAddress.address)
+    }
+
+    const findHolderAddressIndex = (walletAddress: HolderAddressData) => {
+        const index = holderAddressData.findIndex((holderAddress) => holderAddress.address === walletAddress.address);
+        return index;
     }
 
     const handleWalletAddress = (walletAddress: string) => {
@@ -270,13 +279,23 @@ const Top = () => {
                     {isLoading ? 'Loading...' : isHolderAddress({ address: walletAddress }) ? 'Holder Mint' : 'Public Mint'}
                 </button>
 
-                {errorMsg && (
+                {!isSuccess && errorMsg && (
                     <p
-                        className="text-red-500 text-sm m-4"
+                        className="text-red-500 text-sm m-4 w-90 p-3"
                     >
                         {errorMsg.message}
                     </p>
                 )}
+
+                {isSuccess && tx && (
+                    <a
+                        href={`https://blockscout.com/astar/tx/${tx.hash}`}
+                    >
+                        トランザクション
+                    </a>   
+                )}
+
+                {tx && <Confetti />}
             </div>
 
         </>
