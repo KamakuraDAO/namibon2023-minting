@@ -28,7 +28,7 @@ const Top = () => {
     const [tx, setTx] = useState<any>()
 
     const [totalSupply, setTotalSupply] = useState<number>(0)
-    
+
     useEffect(() => {
         const fetchTotalSupply = async () => {
             try {
@@ -52,6 +52,8 @@ const Top = () => {
     const handlePublicMint = async () => {
         try {
             setIsLoading(true)
+            setErrorMsg(null)
+
             const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_RPC_URL as string)
             const owner = new Wallet(process.env.NEXT_PUBLIC_PRIVATE_KEY as string, provider)
             const contract = new ethers.Contract(
@@ -73,7 +75,7 @@ const Top = () => {
 
             setIsLoading(false)
             setTx(tx)
-            setIsSuccess(true)            
+            setIsSuccess(true)
         } catch (error) {
             setIsLoading(false)
             setIsSuccess(false)
@@ -84,6 +86,7 @@ const Top = () => {
     const handleHolderMint = async () => {
         try {
             setIsLoading(true)
+            setErrorMsg(null)
             const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_RPC_URL as string)
             const owner = new Wallet(process.env.NEXT_PUBLIC_PRIVATE_KEY as string, provider)
             const contract = new ethers.Contract(
@@ -97,8 +100,8 @@ const Top = () => {
             const proof = holderProof[index]
 
             const tx = await contract.holderMint(
-                proof, 
-                password, 
+                proof,
+                password,
                 version,
                 walletAddress
             );
@@ -143,7 +146,7 @@ const Top = () => {
     return (
         <>
             <div
-                className="flex flex-col justify-center items-center w-full px-5 my-10 h-fit md:h-screen ]"
+                className="bg-white w-full px-5 h-fit flex justify-center items-center py-2"
             >
                 <Image
                     src="/images/namibon23_logo_yokonaga.jpg"
@@ -152,8 +155,13 @@ const Top = () => {
                     height={200}
                     className='rounded-lg'
                 />
+            </div>
+            <div
+                className="flex flex-col items-center w-full px-5 h-full my-5"
+            >
+
                 <h1
-                    className="text-gray-700 text-xl font-bold mb-2 my-5"
+                    className="text-gray-700 text-2xl font-bold mb-2 my-5"
                 >
                     なみぼんNFT (ver.2023)
                 </h1>
@@ -165,18 +173,37 @@ const Top = () => {
                 </h2>
 
                 <div
-                    className="text-gray-700 text-sm my-5 w-90 p-3 rounded-lg bg-white"
+                    className="text-gray-700 text-sm my-5 p-5 rounded-lg bg-white w-full md:w-1/3"
                 >
-                    <p className='font-bold text-center'>ようこそ！</p>
+                    <p className='font-bold text-center'>なみぼんNFTをゲットしよう！</p>
                     <br />
-                    <p>今年もお祭りNFT発行します！今回は去年大好評だった稲村ケ崎から見える絶景の写真コレクションとなっています。</p>
-                    
+                    <p>今年もお祭りNFT発行します！今回は写真コレクションとなっています。</p>
+
+                    <br />
+
                     <p>通常版はウォレットアドレスを持っている方は誰でも発行できます。特別版が発行できるのは、去年のなみぼんNFTを持っている方のみです。</p>
 
                     <br />
+
+                    <p>当日は「去年のなみぼん」の写真ですが、２週間後にプロの写真家が撮った「今年のなみぼん」の写真に更新される予定です。お楽しみに！</p>
+
+                    <br />
+                    <div
+                        className='flex justify-center items-center my-5'
+                    >
+                        <Image
+                            src="/images/detail.png"
+                            alt="Detail"
+                            width={500}
+                            height={500}
+                        // className='rounded-lg shadow-md'
+                        />
+                    </div>
                     <p>今年も楽しみましょう！</p>
 
-                    <p>by 鎌倉DAO一同（メンバーも募集中）</p>
+                    <br />
+                    <p>by 鎌倉DAO一同（メンバーも募集中！）</p>
+
                 </div>
 
                 <label
@@ -185,7 +212,7 @@ const Top = () => {
                     Wallet Address
                 </label>
                 <input
-                    className="border border-gray-400 rounded-lg px-4 py-2 mt-2 mb-4 hover:border-gray-500 focus:border-gray-500 focus:outline-none"
+                    className='my-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                     type="text"
                     placeholder="ウォレットアドレス"
                     onChange={(e) => handleWalletAddress(e.target.value)}
@@ -197,7 +224,7 @@ const Top = () => {
                     Password
                 </label>
                 <input
-                    className="border border-gray-400 rounded-lg px-4 py-2 mt-2 mb-4 hover:border-gray-500 focus:border-gray-500 focus:outline-none"
+                    className='my-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                     type="text"
                     placeholder="あいことば"
                     onChange={(e) => setPassword(e.target.value)}
@@ -220,21 +247,21 @@ const Top = () => {
                                 onClick={() => setVersion(0)}
                             >
                                 <Image
-                                    src="/images/V0.png"
-                                    alt="Picture of the author"
+                                    src="/images/VerA.jpg"
+                                    alt="Namibon ver.A"
                                     width={150}
                                     height={150}
                                     className='rounded-lg shadow-md'
                                 />
-                            {version === 0 && (
-                                <Image
-                                    src="/icons/badge.svg"
-                                    alt="Picture of the author"
-                                    width={25}
-                                    height={25}
-                                    className={`absolute -top-3 -right-3`}
-                                />
-                            )}
+                                {version === 0 && (
+                                    <Image
+                                        src="/icons/badge.svg"
+                                        alt="Picture of the author"
+                                        width={25}
+                                        height={25}
+                                        className={`absolute -top-3 -right-3`}
+                                    />
+                                )}
 
                             </button>
                         </div>
@@ -250,38 +277,38 @@ const Top = () => {
 
                         <div
                         >
-                        <button    
-                            className='relative'               
-                            onClick={() => setVersion(1)}
-                            disabled={!isHolderAddress({ address: walletAddress })}
-                        >
-                            <Image
-                                src="/images/V1.png"
-                                alt="Picture of the author"
-                                width={150}
-                                height={150}
-                                className={`rounded-lg shadow-md ${!isHolderAddress({ address: walletAddress }) ? 'opacity-40' : ''}`}
-                            />
-
-                            {/* badge */}
-                            {version === 1 && isHolderAddress({ address: walletAddress }) && (
+                            <button
+                                className='relative'
+                                onClick={() => setVersion(1)}
+                                disabled={!isHolderAddress({ address: walletAddress })}
+                            >
                                 <Image
-                                    src="/icons/badge.svg"
-                                    alt="Picture of the author"
-                                    width={25}
-                                    height={25}
-                                    className={`absolute -top-3 -right-3`}
+                                    src="/images/VerB.jpg"
+                                    alt="Namibon ver.B"
+                                    width={150}
+                                    height={150}
+                                    className={`rounded-lg shadow-md ${!isHolderAddress({ address: walletAddress }) ? 'opacity-40' : ''}`}
                                 />
-                            )}
-                        </button>
-                        
+
+                                {/* badge */}
+                                {version === 1 && isHolderAddress({ address: walletAddress }) && (
+                                    <Image
+                                        src="/icons/badge.svg"
+                                        alt="Picture of the author"
+                                        width={25}
+                                        height={25}
+                                        className={`absolute -top-3 -right-3`}
+                                    />
+                                )}
+                            </button>
+
                         </div>
 
                     </div>
                 </div>
 
                 <button
-                    className={`font-bold py-2 px-5 rounded my-5 ${isValidAddress && password !== ""? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-gray-400 text-gray-700 cursor-not-allowed'}`}
+                    className={`font-bold py-2 px-5 rounded my-5 ${isValidAddress && password !== "" ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-gray-400 text-gray-700 cursor-not-allowed'}`}
                     disabled={!isValidAddress || password === ""}
                     onClick={() => isHolderAddress({ address: walletAddress }) ? handleHolderMint() : handlePublicMint()}
                 >
@@ -289,22 +316,36 @@ const Top = () => {
                 </button>
 
                 {!isSuccess && errorMsg && (
-                    <p
-                        className="text-red-500 text-sm m-4 w-90 p-3"
-                    >
-                        {errorMsg.message}
-                    </p>
+                    <>
+                        <h1
+                            className='text-red-500 text-xl font-bold'
+                        >
+                            Error
+                        </h1>
+                        <div
+                            className='break-all text-red-500 text-sm'
+                        >
+                            {errorMsg.message}
+                        </div>
+                    </>
                 )}
 
                 {isSuccess && tx && (
-                    <a
-                        href={`https://blockscout.com/astar/tx/${tx.hash}`}
-                    >
-                        トランザクション
-                    </a>   
+                    <>
+                        <h1
+                            className='text-green-500 text-xl font-bold'
+                        >
+                            Success
+                        </h1>
+                        <a
+                            href={`https://blockscout.com/astar/tx/${tx.hash}`}
+                        >
+                            トランザクションはこちら
+                        </a>
+                    </>
                 )}
 
-                {tx && <Confetti />}
+                {isSuccess && <Confetti />}
             </div>
 
         </>
