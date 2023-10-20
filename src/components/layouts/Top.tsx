@@ -154,11 +154,12 @@ const Top = () => {
                 className="flex flex-col items-center w-full px-5 h-full my-5"
             >
 
-                <h1
+                <a
                     className="text-gray-700 text-2xl font-bold mb-2 my-5"
+                    href='https://tofunft.com/collection/namibon-nft-2023/items' target="_blank" rel="noopener noreferrer"
                 >
                     なみぼんNFT (ver.2023)
-                </h1>
+                </a>
 
                 <h2
                     className="text-gray-700 text-md font-bold"
